@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ulush</title><meta name="theme-color" content="#0e7c86">
+<style>
+:root{--bg:#f2f6f7;--cd:#fff;--tx:#0b2f36;--mu:#5d7a80;--pr:#0e7c86;--ac:#f5a524;--ok:#15803d;--bad:#dc2626;--bd:#dbe6e8}
+@media(prefers-color-scheme:dark){:root{--bg:#0a1a1d;--cd:#12292d;--tx:#e6f2f3;--mu:#8fb0b5;--pr:#2bb6c2;--ok:#4ade80;--bad:#f87171;--bd:#1f3d42}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+#app{max-width:520px;margin:0 auto;padding:14px 14px 90px}
+h1{margin:0;font-size:26px;font-weight:800}h3{margin:0 0 10px}small{color:var(--mu)}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:12px;margin-bottom:8px}
+.row{display:flex;align-items:center;gap:10px;cursor:pointer}.fl{flex:1;min-width:0}.fl b,.fl small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.em{font-size:26px;width:44px;height:44px;border-radius:12px;background:var(--bg);display:grid;place-items:center;flex:none}
+.hero{background:var(--pr);color:#fff;border-radius:18px;padding:16px;margin-bottom:14px}.hero small{color:#d6f3f5}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.two b{font-size:20px;display:block}.hero .ok{color:#bbf7d0}.hero .bad{color:#fecaca}
+.ok{color:var(--ok);font-weight:700}.bad{color:var(--bad);font-weight:700}
+button,input,select{font:inherit;color:inherit}
+input,select{width:100%;padding:12px;border:1px solid var(--bd);border-radius:12px;background:var(--cd);margin-bottom:8px}
+button{border:0;border-radius:12px;padding:12px 14px;background:var(--bd);cursor:pointer}
+.pri{background:var(--pr);color:#fff;width:100%;font-weight:700;margin-top:6px}.ghost{background:none;color:var(--mu)}
+.fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom));background:var(--ac);color:#3b2600;font-weight:800;padding:14px 26px;border-radius:30px;box-shadow:0 6px 18px #0004;z-index:5}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:10px 0}.tab{white-space:nowrap;background:var(--cd);border:1px solid var(--bd)}.tab.on,.chip.on,.seg .on{background:var(--pr);color:#fff;border-color:var(--pr)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.chip{padding:8px 10px;background:var(--bg);border:1px solid var(--bd)}
+.seg{display:flex;gap:6px;margin:6px 0}.seg button{flex:1}
+.sp{display:flex;align-items:center;gap:8px}.sp label{flex:1}.sp input[type=number]{width:120px;margin:0 0 6px}.sp input[type=checkbox]{width:auto;margin:0 6px 0 0}
+.x{background:none;color:var(--mu);padding:6px}.empty{text-align:center;color:var(--mu);padding:26px 0}
+.bd{position:fixed;inset:0;background:#0008;display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.sheet{background:var(--bg);width:100%;max-width:520px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+#toast{position:fixed;top:calc(12px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:12px;z-index:20;display:none;max-width:90%}
+.bar{height:8px;border-radius:4px;background:var(--pr);margin-top:4px}.link{word-break:break-all;font-size:13px;background:var(--bg);padding:8px;border-radius:8px;margin:8px 0}
+label{display:block;margin:6px 0;color:var(--mu);font-size:14px}
+</style></head><body><div id="app"></div><div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const sb=supabase.createClient('https://zovrgpevmdgakapahxqp.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvdnJncGV2bWRnYWthcGFoeHFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyNjUwMTUsImV4cCI6MjEwNTg0MTAxNX0.UT15Z8gFkttsFGVTFf6H9i5nhMvcvBWF7CgXXoqfcAc');
+const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=n=>Math.round(n).toLocaleString('ru-RU')+" so'm";
+const CATS={ovqat:['🍽️','Ovqat','#f97316'],transport:['🚕','Transport','#3b82f6'],uy:['🏠','Uy-joy','#8b5cf6'],xarid:['🛒','Xarid','#ec4899'],dam:['🎉',"Ko'ngilochar",'#eab308'],boshqa:['📦','Boshqa','#64748b']};
+let S={me:null,groups:[],members:[],exps:[],gid:null,tab:'x',am:'in',cat:'ovqat',mode:'eq'};
+try{const j=new URLSearchParams(location.search).get('join');if(j)localStorage.setItem('ulush_join',j)}catch(e){}
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3500)}
+const pn=p=>{let d=String(p).replace(/\D/g,'');if(d.length==9)d='998'+d;return d.length==12?d:null};
+const mem=id=>S.members.find(m=>m.id==id),gmem=g=>S.members.filter(m=>m.group_id==g),myM=g=>S.members.find(m=>m.group_id==g&&m.user_id==S.me.id);
+function bal(g){const n={};gmem(g).forEach(m=>n[m.id]=0);S.exps.filter(e=>e.group_id==g).forEach(e=>{n[e.paid_by]=(n[e.paid_by]||0)+Number(e.amount);e.splits.forEach(s=>n[s.member_id]=(n[s.member_id]||0)-Number(s.share))});return n}
+function settle(g){const n=bal(g),c=[],d=[];for(const k in n){if(n[k]>=1)c.push([k,n[k]]);else if(n[k]<=-1)d.push([k,-n[k]])}c.sort((a,b)=>b[1]-a[1]);d.sort((a,b)=>b[1]-a[1]);const r=[];let i=0,j=0;while(i<c.length&&j<d.length){const x=Math.min(c[i][1],d[j][1]);r.push({from:d[j][0],to:c[i][0],amt:x});c[i][1]-=x;d[j][1]-=x;if(c[i][1]<1)i++;if(d[j][1]<1)j++}return r}
+
+async function boot(){try{
+ const{data:{session}}=await sb.auth.getSession();
+ if(!session){S.me=null;return view()}
+ const{data:p}=await sb.from('profiles').select('*').eq('id',session.user.id).maybeSingle();
+ S.me=p||{id:session.user.id,name:'Do\'st',phone:''};
+ let j=null;try{j=localStorage.getItem('ulush_join')}catch(e){}
+ if(j){const r=await sb.rpc('join_group',{p_code:j});if(r.error)toast('Taklif havolasi yaroqsiz');else{S.gid=r.data;toast("Guruhga qo'shildingiz 🎉")}try{localStorage.removeItem('ulush_join')}catch(e){}history.replaceState(null,'',location.pathname)}
+ await load();view()}catch(e){toast('Xatolik: '+e.message)}}
+async function load(){
+ const a=await sb.from('members').select('*,groups(*)');if(a.error)throw a.error;
+ S.members=a.data||[];const gm={};S.members.forEach(m=>{if(m.groups)gm[m.group_id]=m.groups});
+ S.groups=Object.values(gm).sort((x,y)=>String(y.created_at).localeCompare(String(x.created_at)));
+ const b=await sb.from('expenses').select('*,splits(*)').order('spent_on',{ascending:false}).order('created_at',{ascending:false});if(b.error)throw b.error;S.exps=b.data||[]}
+async function auth(kind){try{
+ const phone=pn($('#ph').value);if(!phone)return toast("Telefon raqamni to'g'ri kiriting: 90 123 45 67");
+ const pw=$('#pw').value;if(pw.length<6)return toast('Parol kamida 6 belgi bo\'lsin');
+ const email=phone+'@ulush.app';let r;
+ if(kind=='up'){const name=$('#nm').value.trim();if(!name)return toast('Ismingizni yozing');r=await sb.auth.signUp({email,password:pw,options:{data:{name,phone}}})}
+ else r=await sb.auth.signInWithPassword({email,password:pw});
+ if(r.error)return toast(/invalid/i.test(r.error.message)?'Raqam yoki parol xato':r.error.message);
+ if(!r.data.session){const r2=await sb.auth.signInWithPassword({email,password:pw});if(r2.error)return toast(kind=='up'?"Bu raqam allaqachon ro'yxatdan o'tgan, «Kirish» ni bosing":'Raqam yoki parol xato')}
+ boot()}catch(e){toast('Xatolik: '+e.message)}}
+async function out(){await sb.auth.signOut();S.me=null;S.gid=null;view()}
+
+function view(){const a=$('#app');a.innerHTML=!S.me?authH():S.gid?groupH(S.gid):homeH()}
+function authH(){const up=S.am=='up';return `<div style="text-align:center;margin:40px 0 20px"><div style="font-size:54px">💸</div><h1>Ulush</h1><small>Xarajatlarni do'stlar bilan oson bo'ling</small></div>
+<div class="seg"><button class="${up?'':'on'}" onclick="S.am='in';view()">Kirish</button><button class="${up?'on':''}" onclick="S.am='up';view()">Ro'yxatdan o'tish</button></div>
+${up?'<input id="nm" placeholder="Ismingiz" autocomplete="name">':''}<input id="ph" type="tel" placeholder="Telefon: 90 123 45 67" autocomplete="tel"><input id="pw" type="password" placeholder="Parol (kamida 6 belgi)" autocomplete="${up?'new-password':'current-password'}">
+<button class="pri" onclick="auth('${up?'up':'in'}')">${up?"Ro'yxatdan o'tish":'Kirish'}</button><p class="empty">SMS kod kerak emas. Telefon raqam va parol yetarli.</p>`}
+function homeH(){let pos=0,neg=0;const rows=S.groups.map(g=>{const m=myM(g.id),b=m?(bal(g.id)[m.id]||0):0;if(b>=1)pos+=b;else if(b<=-1)neg-=b;return `<div class="card row" onclick="S.gid='${g.id}';S.tab='x';view()"><div class="em">${esc(g.emoji)}</div><div class="fl"><b>${esc(g.name)}</b><small>${gmem(g.id).length} a'zo</small></div><div class="${b>=0?'ok':'bad'}">${Math.abs(b)<1?'Teng':(b>0?'+':'−')+fmt(Math.abs(b))}</div></div>`}).join('');
+return `<header><h1>💸 Ulush</h1><button class="ghost" onclick="out()">Chiqish</button></header>
+<div class="hero"><small>Salom, ${esc(S.me.name)}!</small><div class="two"><div><small>Sizga qaytaradilar</small><b class="ok">${fmt(pos)}</b></div><div><small>Siz qaytarasiz</small><b class="bad">${fmt(neg)}</b></div></div></div>
+${rows||'<p class="empty">Hali guruh yo\'q. Birinchi guruhni yarating 👇</p>'}<button class="fab" onclick="newG()">+ Guruh</button>`}
+function groupH(g){const G=S.groups.find(x=>x.id==g);if(!G){S.gid=null;return homeH()}
+const tabs=[['x','Xarajatlar'],['b','Balans'],['d','Diagramma'],['a',"A'zolar"]].map(([k,t])=>`<button class="tab ${S.tab==k?'on':''}" onclick="S.tab='${k}';view()">${t}</button>`).join('');
+const ex=S.exps.filter(e=>e.group_id==g);let body='';
+if(S.tab=='x')body=ex.map(e=>{const p=mem(e.paid_by),c=CATS[e.category]||CATS.boshqa,pay=e.kind=='payment';
+ return `<div class="card row" style="cursor:default"><div class="em">${pay?'🤝':c[0]}</div><div class="fl"><b>${pay?esc(p&&p.name)+' → '+esc((mem(e.splits[0]&&e.splits[0].member_id)||{}).name):esc(e.title)}</b><small>${pay?"To'lov":esc(p&&p.name)+" to'ladi"}, ${e.spent_on}</small></div><b>${fmt(e.amount)}</b><button class="x" onclick="delE('${e.id}')">✕</button></div>`}).join('')||'<p class="empty">Hali xarajat yo\'q. «+ Xarajat» ni bosing</p>';
+if(S.tab=='b'){const n=bal(g),st=settle(g);body=gmem(g).map(m=>{const v=n[m.id]||0;return `<div class="card row" style="cursor:default"><div class="fl"><b>${esc(m.name)}</b></div><div class="${v>=0?'ok':'bad'}">${Math.abs(v)<1?'Teng':(v>0?'oladi ':'beradi ')+fmt(Math.abs(v))}</div></div>`}).join('')+'<h3 style="margin-top:16px">Qanday hisob-kitob qilish kerak</h3>'+(st.map(s=>`<div class="card"><b>${esc(mem(s.from).name)}</b> → <b>${esc(mem(s.to).name)}</b>: <b>${fmt(s.amt)}</b><button class="pri" onclick="pay('${s.from}','${s.to}',${Math.round(s.amt)})">To'landi ✓</button></div>`).join('')||'<p class="empty">Hamma hisob-kitob qilgan 🎉</p>')}
+if(S.tab=='d'){const t={},pm={};let tot=0;ex.filter(e=>e.kind=='expense').forEach(e=>{t[e.category]=(t[e.category]||0)+Number(e.amount);pm[e.paid_by]=(pm[e.paid_by]||0)+Number(e.amount);tot+=Number(e.amount)});
+ if(!tot)body='<p class="empty">Diagramma xarajat qo\'shilgach chiqadi</p>';else{let off=0;const ents=Object.entries(t).sort((a,b)=>b[1]-a[1]),mx=Math.max(...Object.values(pm));
+ const arcs=ents.map(([k,v])=>{const p=v/tot*100,s=`<circle r="15.9155" cx="21" cy="21" fill="none" stroke="${(CATS[k]||CATS.boshqa)[2]}" stroke-width="6" stroke-dasharray="${p} ${100-p}" stroke-dashoffset="${25-off}"/>`;off+=p;return s}).join('');
+ body=`<div class="card" style="text-align:center"><svg viewBox="0 0 42 42" width="220" height="220"><circle r="15.9155" cx="21" cy="21" fill="none" stroke="var(--bd)" stroke-width="6"/>${arcs}<text x="21" y="21" text-anchor="middle" font-size="3.4" font-weight="700" fill="currentColor">${fmt(tot)}</text><text x="21" y="25" text-anchor="middle" font-size="2.2" fill="var(--mu)">jami</text></svg></div>
+ ${ents.map(([k,v])=>{const c=CATS[k]||CATS.boshqa;return `<div class="card row" style="cursor:default"><span style="width:14px;height:14px;border-radius:50%;background:${c[2]}"></span><div class="fl"><b>${c[0]} ${c[1]}</b></div><b>${fmt(v)}</b><small>${Math.round(v/tot*100)}%</small></div>`}).join('')}
+ <h3 style="margin-top:16px">Kim qancha to'lagan</h3>${Object.entries(pm).map(([k,v])=>`<div class="card"><div style="display:flex;justify-content:space-between"><b>${esc((mem(k)||{}).name)}</b><span>${fmt(v)}</span></div><div class="bar" style="width:${v/mx*100}%"></div></div>`).join('')}`}}
+if(S.tab=='a'){const link=location.origin+location.pathname+'?join='+G.code;body=`<div class="card"><b>Havola orqali taklif qilish</b><div class="link">${esc(link)}</div><button class="pri" onclick="share('${esc(link)}')">Havolani ulashish</button></div>
+ <div class="card"><b>Telefon raqam orqali qo'shish</b><input id="mn" placeholder="Ismi"><input id="mp" type="tel" placeholder="90 123 45 67"><button class="pri" onclick="addM()">Qo'shish</button><small>Do'st hali ro'yxatdan o'tmagan bo'lsa ham xarajatlarga qo'shishingiz mumkin. U shu raqam bilan kirganda hammasini ko'radi.</small></div>
+ ${gmem(g).map(m=>`<div class="card row" style="cursor:default"><div class="fl"><b>${esc(m.name)}</b><small>${esc(m.phone||'')}${m.user_id?'':' (hali kirmagan)'}</small></div></div>`).join('')}<button class="pri" style="background:var(--bd);color:var(--tx)" onclick="csv()">CSV yuklab olish</button>`}
+return `<header><button class="ghost" onclick="S.gid=null;view()">← Orqaga</button><b>${esc(G.emoji)} ${esc(G.name)}</b><span></span></header><div class="tabs">${tabs}</div>${body}${S.tab=='x'?'<button class="fab" onclick="newE()">+ Xarajat</button>':''}`}
+
+function modal(h){closeM();const d=document.createElement('div');d.className='bd';d.id='md';d.onclick=e=>{if(e.target==d)closeM()};d.innerHTML='<div class="sheet">'+h+'</div>';document.body.appendChild(d)}
+function closeM(){const d=$('#md');if(d)d.remove()}
+function newG(){modal(`<h3>Yangi guruh</h3><input id="gn" placeholder="Guruh nomi (masalan: Uy, Sayohat)"><div class="chips" id="ge">${['🏠','✈️','🍕','🎉','🚗','💼','❤️','👥'].map((e,i)=>`<button class="chip ${i==7?'on':''}" onclick="document.querySelectorAll('#ge .chip').forEach(x=>x.classList.remove('on'));this.classList.add('on')">${e}</button>`).join('')}</div><button class="pri" onclick="saveG()">Yaratish</button>`)}
+async function saveG(){try{const n=$('#gn').value.trim();if(!n)return toast('Guruh nomini yozing');const e=$('#ge .on').textContent;const r=await sb.rpc('create_group',{p_name:n,p_emoji:e});if(r.error)throw r.error;closeM();await load();S.gid=r.data;S.tab='a';view()}catch(e){toast('Xatolik: '+e.message)}}
+function newE(){const ms=gmem(S.gid),me=myM(S.gid);S.cat='ovqat';S.mode='eq';
+modal(`<h3>Yangi xarajat</h3><input id="t" placeholder="Nima uchun? (kechki ovqat)"><input id="am" type="number" inputmode="numeric" placeholder="Summa (so'm)"><div class="chips" id="cc">${Object.entries(CATS).map(([k,c])=>`<button class="chip ${k=='ovqat'?'on':''}" onclick="S.cat='${k}';document.querySelectorAll('#cc .chip').forEach(x=>x.classList.remove('on'));this.classList.add('on')">${c[0]} ${c[1]}</button>`).join('')}</div>
+<label>Kim to'ladi?</label><select id="pb">${ms.map(m=>`<option value="${m.id}" ${me&&m.id==me.id?'selected':''}>${esc(m.name)}</option>`).join('')}</select>
+<label>Kimlar orasida bo'linadi?</label><div class="seg"><button id="m1" class="on" onclick="setMode('eq')">Teng</button><button id="m2" onclick="setMode('ex')">Summa bo'yicha</button></div>
+${ms.map(m=>`<div class="sp"><label><input type="checkbox" class="ck" value="${m.id}" checked>${esc(m.name)}</label><input class="ev" data-m="${m.id}" type="number" inputmode="numeric" placeholder="0" style="display:none"></div>`).join('')}<button class="pri" onclick="saveE()">Saqlash</button>`)}
+function setMode(m){S.mode=m;$('#m1').classList.toggle('on',m=='eq');$('#m2').classList.toggle('on',m=='ex');document.querySelectorAll('.ev').forEach(i=>i.style.display=m=='ex'?'block':'none')}
+async function addExp(x,splits){const r=await sb.from('expenses').insert(x).select().single();if(r.error)throw r.error;
+ const s=await sb.from('splits').insert(splits.map(p=>({expense_id:r.data.id,member_id:p[0],share:p[1]})));if(s.error){await sb.from('expenses').delete().eq('id',r.data.id);throw s.error}}
+async function saveE(){try{const title=$('#t').value.trim(),amount=Math.round(Number($('#am').value)),paid=$('#pb').value;
+ if(!title)return toast('Nima uchun ekanini yozing');if(!(amount>0))return toast('Summani kiriting');
+ const ids=[...document.querySelectorAll('.ck:checked')].map(c=>c.value);if(!ids.length)return toast('Kamida bitta odamni tanlang');
+ let sp;if(S.mode=='eq'){const b=Math.floor(amount/ids.length),r=amount-b*ids.length;sp=ids.map((id,i)=>[id,b+(i<r?1:0)])}
+ else{sp=ids.map(id=>[id,Math.round(Number(document.querySelector('.ev[data-m="'+id+'"]').value)||0)]);const sum=sp.reduce((a,p)=>a+p[1],0);if(sum!=amount)return toast("Summalar yig'indisi "+fmt(sum)+", kerak: "+fmt(amount))}
+ await addExp({group_id:S.gid,title,amount,paid_by:paid,category:S.cat},sp);closeM();await load();view();toast("Xarajat qo'shildi ✓")}catch(e){toast('Xatolik: '+e.message)}}
+async function pay(f,t,a){try{await addExp({group_id:S.gid,title:"To'lov",amount:a,paid_by:f,kind:'payment',category:'boshqa'},[[t,a]]);await load();view();toast('Hisob-kitob yozildi ✓')}catch(e){toast('Xatolik: '+e.message)}}
+async function delE(id){if(!confirm("Bu yozuvni o'chirasizmi?"))return;const r=await sb.from('expenses').delete().eq('id',id);if(r.error)return toast(r.error.message);await load();view()}
+async function addM(){try{const nm=$('#mn').value.trim(),ph=pn($('#mp').value);if(!ph)return toast("Telefon raqamni to'g'ri kiriting");
+ if(gmem(S.gid).some(m=>m.phone==ph))return toast("Bu raqam guruhda bor");const r=await sb.rpc('add_member',{p_group:S.gid,p_name:nm,p_phone:ph});if(r.error)throw r.error;await load();view();toast("Qo'shildi ✓")}catch(e){toast('Xatolik: '+e.message)}}
+async function share(l){const G=S.groups.find(x=>x.id==S.gid),tx=`«${G.name}» guruhiga Ulush ilovasida qo'shiling:`;
+ try{if(navigator.share)await navigator.share({title:'Ulush',text:tx,url:l});else{await navigator.clipboard.writeText(tx+' '+l);toast('Havola nusxalandi ✓')}}catch(e){try{await navigator.clipboard.writeText(l);toast('Havola nusxalandi ✓')}catch(_){toast(l)}}}
+function csv(){const G=S.groups.find(x=>x.id==S.gid),q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+ const rows=[['Sana','Nomi','Toifa','Kim toladi','Summa']].concat(S.exps.filter(e=>e.group_id==S.gid).map(e=>[e.spent_on,e.title,e.category,(mem(e.paid_by)||{}).name,e.amount]));
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}));a.download='ulush-'+G.name+'.csv';a.click()}
+boot();
+</script></body></html>
