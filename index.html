@@ -112,7 +112,7 @@ if(S.tab=='x')body=ex.map(e=>{const c=CATS[e.category]||CATS.boshqa,pay=e.kind==
  const who=pay?esc((mem(e.paid_by)||{}).name)+' → '+esc((mem((e.splits[0]||{}).member_id)||{}).name):esc(e.title);
  const sub=pay?t('payment'):(ps.length>1?ps.map(p=>esc((mem(p[0])||{}).name)).join(', ')+' '+t('paidby'):esc((mem(e.paid_by)||{}).name)+' '+t('paidby'))+', '+e.spent_on;
  return `<div class="card row" style="cursor:default"><div class="em">${e.receipt_url?`<img src="${esc(e.receipt_url)}">`:(pay?'🤝':c[0])}</div><div class="fl"><b>${who}</b><small>${sub}${e.note?' · '+esc(e.note):''}</small></div><b>${fmt(e.amount)}</b><button class="x" onclick="delE('${e.id}')">✕</button></div>`}).join('')||`<p class="empty">${t('noexp')}</p>`;
-if(S.tab=='b'){const n=bal(g),st=settle(g);body=gmem(g).map(m=>{const v=n[m.id]||0;return `<div class="card row" style="cursor:default"><div class="fl"><b>${esc(m.name)}</b></div><div class="${v>=0?'ok':'bad'}">${Math.abs(v)<1?t('even'):(v>0?(S.lang=='ru'?'получит ':'oladi ')+fmt(Math.abs(v)):(S.lang=='ru'?'должен ':'beradi ')+fmt(Math.abs(v)))}</div></div>`}).join('')+`<h3 style="margin-top:16px">${t('settleTitle')}</h3>`+(st.map(s=>`<div class="card"><b>${esc((mem(s.from)||{}).name)}</b> → <b>${esc((mem(s.to)||{}).name)}</b>: <b>${fmt(s.amt)}</b><button class="pri" onclick="pay('${s.from}','${s.to}',${Math.round(s.amt)})">${t('settled')}</button></div>`).join('')||`<p class="empty">${t('allSettled')}</p>`)}
+if(S.tab=='b'){const n=bal(g),st=settle(g);body=gmem(g).map(m=>{const v=n[m.id]||0;return `<div class="card row" style="cursor:default"><div class="fl"><b>${esc(m.name)}</b></div><div class="${v>=0?'ok':'bad'}">${Math.abs(v)<1?t('even'):(v>0?(S.lang=='ru'?'получит ':'oladi ')+fmt(Math.abs(v)):(S.lang=='ru'?'должен ':'beradi ')+fmt(Math.abs(v)))}</div></div>`}).join('')+`<h3 style="margin-top:16px">${t('settleTitle')}</h3>`+(st.map(s=>`<div class="card"><b>${esc((mem(s.from)||{}).name)}</b> → <b>${esc((mem(s.to)||{}).name)}</b>: <b>${fmt(s.amt)}</b><button class="pri" onclick="payModal('${s.from}','${s.to}',${Math.round(s.amt)})">${t('settled')}</button></div>`).join('')||`<p class="empty">${t('allSettled')}</p>`)}
 if(S.tab=='d'){const cat={},pm={};let tot=0,maxE=null;const months={};
  ex.filter(e=>e.kind=='expense').forEach(e=>{cat[e.category]=(cat[e.category]||0)+Number(e.amount);payersOf(e).forEach(([mid,amt])=>pm[mid]=(pm[mid]||0)+amt);tot+=Number(e.amount);if(!maxE||e.amount>maxE.amount)maxE=e;const mo=String(e.spent_on).slice(0,7);months[mo]=(months[mo]||0)+Number(e.amount)});
  if(!tot)body=`<p class="empty">${t('noChart')}</p>`;else{let off=0;const ents=Object.entries(cat).sort((a,b)=>b[1]-a[1]),mx=Math.max(...Object.values(pm),1);
@@ -121,63 +121,4 @@ if(S.tab=='d'){const cat={},pm={};let tot=0,maxE=null;const months={};
  const pts=mo.map(([k,v],i)=>[mo.length>1?i/(mo.length-1)*280:0,60-v/mmx*55]);
  const poly=pts.map(p=>p[0]+','+(p[1]+2)).join(' ');
  const topCatK=ents[0]?ents[0][0]:null,topSpK=Object.entries(pm).sort((a,b)=>b[1]-a[1])[0];
- body=`<div class="card" style="text-align:center"><svg viewBox="0 0 42 42" width="220" height="220"><circle r="15.9155" cx="21" cy="21" fill="none" stroke="var(--bd)" stroke-width="6"/>${arcs}<text x="21" y="21" text-anchor="middle" font-size="3.4" font-weight="700" fill="currentColor">${fmt(tot)}</text><text x="21" y="25" text-anchor="middle" font-size="2.2" fill="var(--mu)">${t('totalCat')}</text></svg></div>
- ${ents.map(([k,v])=>{const c=CATS[k]||CATS.boshqa;return `<div class="card row" style="cursor:default"><span style="width:14px;height:14px;border-radius:50%;background:${c[2]}"></span><div class="fl"><b>${c[0]} ${c[1][S.lang]}</b></div><b>${fmt(v)}</b><small>${Math.round(v/tot*100)}%</small></div>`}).join('')}
- <h3 style="margin-top:16px">${t('topSpender')}</h3>${Object.entries(pm).map(([k,v])=>`<div class="card"><div style="display:flex;justify-content:space-between"><b>${esc((mem(k)||{}).name)}</b><span>${fmt(v)}</span></div><div class="bar" style="width:${v/mx*100}%"></div></div>`).join('')}
- ${mo.length>1?`<h3 style="margin-top:16px">${t('trend')}</h3><div class="card"><svg viewBox="-4 -4 288 68" width="100%" height="100"><polyline fill="none" stroke="var(--pr)" stroke-width="2" points="${poly}"/>${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]+2}" r="2.5" fill="var(--pr)"/>`).join('')}</svg><div style="display:flex;justify-content:space-between"><small>${mo[0][0]}</small><small>${mo[mo.length-1][0]}</small></div></div>`:''}
- <h3 style="margin-top:16px">${t('stats')}</h3><div class="card">
- <div class="stat"><span>${t('biggestExp')}</span><b>${maxE?esc(maxE.title)+' · '+fmt(maxE.amount):'—'}</b></div>
- <div class="stat"><span>${t('topCat')}</span><b>${topCatK?CATS[topCatK][0]+' '+CATS[topCatK][1][S.lang]:'—'}</b></div>
- <div class="stat"><span>${t('activeDays')}</span><b>${new Set(ex.map(e=>e.spent_on)).size}</b></div>
- </div>`}}
-if(S.tab=='a'){const link=location.origin+location.pathname+'?join='+G.code;body=`<div class="card"><label>${t('groupPhoto')}</label><input type="file" accept="image/*" onchange="setGroupPhoto(this.files[0])"><b>${t('inviteLink')}</b><div class="link">${esc(link)}</div><button class="pri" onclick="share('${esc(link)}')">${t('shareLink')}</button></div>
- <div class="card"><b>${t('addByPhone')}</b><input id="mn" placeholder="${t('fname')}"><input id="mp" type="tel" placeholder="${t('phone')}"><button class="pri" onclick="addM()">${t('addBtn')}</button></div>
- ${gmem(g).map(m=>`<div class="card row" style="cursor:default"><div class="fl"><b>${esc(m.name)}</b><small>${esc(m.phone||'')}${m.user_id?'':' '+t('notJoined')}</small></div></div>`).join('')}<button class="pri" style="background:var(--bd);color:var(--tx)" onclick="csv()">${t('csv')}</button>`}
-if(S.tab=='h')body=(S.acts.filter(x=>x.group_id==g).map(x=>{const p=mem(x.actor_id);return `<div class="card act"><div class="em">${x.kind=='join'?'🎉':(x.kind=='payment'?'🤝':'💸')}</div><div class="fl"><b>${esc(p?p.name:'—')}</b> ${x.kind=='join'?t('joined'):t('added')} <b>${esc(x.detail||'')}</b><small>${new Date(x.created_at).toLocaleString()}</small></div></div>`}).join(''))||`<p class="empty">${t('noActivity')}</p>`;
-return `<header><button class="ghost" onclick="S.gid=null;view()">← ${t('back')}</button><b>${G.photo_url?`<img src="${esc(G.photo_url)}" style="width:24px;height:24px;border-radius:6px;object-fit:cover;vertical-align:middle">`:esc(G.emoji)} ${esc(G.name)}</b>${topbar()}</header><div class="tabs">${tabs}</div>${body}${S.tab=='x'?`<button class="fab" onclick="newE()">${t('newExp')}</button>`:''}`}
-
-function modal(h){closeM();const d=document.createElement('div');d.className='bd';d.id='md';d.onclick=e=>{if(e.target==d)closeM()};d.innerHTML='<div class="sheet">'+h+'</div>';document.body.appendChild(d)}
-function closeM(){const d=$('#md');if(d)d.remove()}
-function newG(){modal(`<h3>${t('newGroupTitle')}</h3><input id="gn" placeholder="${t('groupName')}"><div class="chips" id="ge">${['🏠','✈️','🍕','🎉','🚗','💼','❤️','👥'].map((e,i)=>`<button class="chip ${i==7?'on':''}" onclick="document.querySelectorAll('#ge .chip').forEach(x=>x.classList.remove('on'));this.classList.add('on')">${e}</button>`).join('')}</div><button class="pri" onclick="saveG()">${t('create')}</button>`)}
-async function saveG(){try{const n=$('#gn').value.trim();if(!n)return toast(t('needGroupName'));const e=$('#ge .on').textContent;const r=await sb.rpc('create_group',{p_name:n,p_emoji:e});if(r.error)throw r.error;closeM();await load();S.gid=r.data;S.tab='a';view()}catch(e){toast(t('err')+': '+e.message)}}
-async function setGroupPhoto(file){if(!file)return;try{toast('...');const url=await uploadFile(file,'groups');const r=await sb.from('groups').update({photo_url:url}).eq('id',S.gid);if(r.error)throw r.error;await load();view();toast(t('added2'))}catch(e){toast(t('err')+': '+e.message)}}
-function newE(){const ms=gmem(S.gid),me=myM(S.gid);S.cat='ovqat';S.mode='eq';S.recFreq='none';S.photoData=null;S.payers=[me?me.id:(ms[0]||{}).id];
-modal(`<h3>${t('newExpTitle')}</h3><input id="t" placeholder="${t('what')}"><input id="am" type="number" inputmode="numeric" placeholder="${t('amount')}"><div class="chips" id="cc">${Object.entries(CATS).map(([k,c])=>`<button class="chip ${k=='ovqat'?'on':''}" onclick="S.cat='${k}';document.querySelectorAll('#cc .chip').forEach(x=>x.classList.remove('on'));this.classList.add('on')">${c[0]} ${c[1][S.lang]}</button>`).join('')}</div>
-<label>${t('whoPaid')}</label><div id="payersWrap"></div><button type="button" class="ghost" onclick="addPayerRow()">${t('addPayer')}</button>
-<label>${t('splitWho')}</label><div class="seg"><button id="m1" class="on" onclick="setMode('eq')">${t('eqSplit')}</button><button id="m2" onclick="setMode('ex')">${t('exSplit')}</button></div>
-${ms.map(m=>`<div class="sp"><label><input type="checkbox" class="ck" value="${m.id}" checked>${esc(m.name)}</label><input class="ev" data-m="${m.id}" type="number" inputmode="numeric" placeholder="0" style="display:none"></div>`).join('')}
-<label>${t('recurring')}</label><select id="rf" onchange="S.recFreq=this.value"><option value="none">${t('recNo')}</option><option value="weekly">${t('recWeek')}</option><option value="monthly">${t('recMonth')}</option></select>
-<input id="nt" placeholder="${t('note')}"><label>${t('receipt')}</label><input type="file" accept="image/*" onchange="pickReceipt(this.files[0])"><div id="rprev"></div>
-<button class="pri" onclick="saveE()">${t('save')}</button>`);
-renderPayers();}
-function renderPayers(){const ms=gmem(S.gid);$('#payersWrap').innerHTML=S.payers.map((pid,i)=>`<div class="payer"><select onchange="S.payers[${i}]=this.value">${ms.map(m=>`<option value="${m.id}" ${m.id==pid?'selected':''}>${esc(m.name)}</option>`).join('')}</select>${S.payers.length>1?`<input type="number" class="pamt" data-i="${i}" placeholder="0">`:''}${S.payers.length>1?`<button type="button" class="x" onclick="S.payers.splice(${i},1);renderPayers()">✕</button>`:''}</div>`).join('')}
-function addPayerRow(){const ms=gmem(S.gid);const unused=ms.find(m=>!S.payers.includes(m.id));S.payers.push(unused?unused.id:ms[0].id);renderPayers()}
-async function pickReceipt(file){if(!file)return;const r=new FileReader();r.onload=()=>{S.photoData=file;$('#rprev').innerHTML=`<img class="thumb" src="${r.result}">`};r.readAsDataURL(file)}
-function setMode(m){S.mode=m;$('#m1').classList.toggle('on',m=='eq');$('#m2').classList.toggle('on',m=='ex');document.querySelectorAll('.ev').forEach(i=>i.style.display=m=='ex'?'block':'none')}
-async function saveE(){try{const title=$('#t').value.trim(),amount=Math.round(Number($('#am').value)),note=$('#nt').value.trim();
- if(!title)return toast(t('needTitle'));if(!(amount>0))return toast(t('needAmount'));
- const ids=[...document.querySelectorAll('.ck:checked')].map(c=>c.value);if(!ids.length)return toast(t('needOne'));
- let sp;if(S.mode=='eq'){const b=Math.floor(amount/ids.length),r=amount-b*ids.length;sp=ids.map((id,i)=>[id,b+(i<r?1:0)])}
- else{sp=ids.map(id=>[id,Math.round(Number(document.querySelector('.ev[data-m="'+id+'"]').value)||0)]);const sum=sp.reduce((a,p)=>a+p[1],0);if(sum!=amount)return toast(t('sumMismatch',fmt(sum)))}
- let payers;if(S.payers.length==1){payers=[[S.payers[0],amount]]}
- else{payers=S.payers.map((pid,i)=>[pid,Math.round(Number((document.querySelector('.pamt[data-i="'+i+'"]')||{}).value)||0)]);const sp2=payers.reduce((a,p)=>a+p[1],0);if(sp2!=amount)return toast(t('sumMismatch',fmt(sp2)))}
- let receiptUrl=null;if(S.photoData){toast('...');receiptUrl=await uploadFile(S.photoData,'receipts')}
- const r=await sb.rpc('add_expense_full',{p_group:S.gid,p_title:title,p_amount:amount,p_category:S.cat,p_note:note||null,p_receipt:receiptUrl,
-  p_payers:payers.map(p=>({member_id:p[0],amount:p[1]})),p_splits:sp.map(p=>({member_id:p[0],share:p[1]}))});
- if(r.error)throw r.error;
- if($('#rf').value!='none'){const rt=await sb.from('recurring_templates').insert({group_id:S.gid,title,amount,category:S.cat,paid_by:payers[0][0],freq:$('#rf').value,
-   split_json:sp.map(p=>({member_id:p[0],share:p[1]})),next_date:new Date(Date.now()+(($('#rf').value=='weekly')?7:30)*86400000).toISOString().slice(0,10)});if(rt.error)throw rt.error}
- closeM();await load();view();toast(t('expAdded'))}catch(e){toast(t('err')+': '+e.message)}}
-async function pay(f,tt,a){try{const r=await sb.rpc('add_expense_full',{p_group:S.gid,p_title:t('payment'),p_amount:a,p_category:'boshqa',p_note:null,p_receipt:null,
- p_payers:[{member_id:f,amount:a}],p_splits:[{member_id:tt,share:a}]});if(r.error)throw r.error;
- await sb.from('expenses').update({kind:'payment'}).eq('id',r.data);await load();view();toast(t('settledMsg'))}catch(e){toast(t('err')+': '+e.message)}}
-async function delE(id){if(!confirm(t('delConfirm')))return;const r=await sb.from('expenses').delete().eq('id',id);if(r.error)return toast(r.error.message);await load();view()}
-async function addM(){try{const nm=$('#mn').value.trim(),ph=pn($('#mp').value);if(!ph)return toast(t('needPhoneValid'));
- if(gmem(S.gid).some(m=>m.phone==ph))return toast(t('already'));const r=await sb.rpc('add_member',{p_group:S.gid,p_name:nm,p_phone:ph});if(r.error)throw r.error;await load();view();toast(t('added2'))}catch(e){toast(t('err')+': '+e.message)}}
-async function share(l){const G=S.groups.find(x=>x.id==S.gid),tx=`«${G.name}» ${S.lang=='ru'?'группе в Ulush':"guruhiga Ulush ilovasida qo'shiling"}:`;
- try{if(navigator.share)await navigator.share({title:'Ulush',text:tx,url:l});else{await navigator.clipboard.writeText(tx+' '+l);toast(t('linkCopied'))}}catch(e){try{await navigator.clipboard.writeText(l);toast(t('linkCopied'))}catch(_){toast(l)}}}
-function csv(){const G=S.groups.find(x=>x.id==S.gid),q=v=>'"'+String(v).replace(/"/g,'""')+'"';
- const rows=[['Sana','Nomi','Toifa','Kim toladi','Summa']].concat(S.exps.filter(e=>e.group_id==S.gid).map(e=>[e.spent_on,e.title,e.category,(mem(e.paid_by)||{}).name,e.amount]));
- const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}));a.download='ulush-'+G.name+'.csv';a.click()}
-boot();
-</script></body></html>
+ body=`<div class="card" style="text-align:cente
