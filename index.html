@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="uz"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Ulush</title><meta name="theme-color" content="#0e7c86">
+<style>
+:root{--bg:#faf4f5;--cd:#fff;--tx:#1c1c1e;--mu:#6e6e73;--pr:#9c1f3d;--ac:#b23252;--ok:#1f9254;--bad:#d92d3b;--bd:#ecdfe2}
+:root[data-theme="dark"]{--bg:#121012;--cd:#1c191b;--tx:#f5f0f1;--mu:#a3999b;--pr:#d6486a;--ac:#e06687;--ok:#34c977;--bad:#f0555f;--bd:#332c2e}
+*{box-sizing:border-box}html,body{height:100%}body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+#app{max-width:520px;margin:0 auto;padding:14px 14px 90px}
+h1{margin:0;font-size:26px;font-weight:800}h3{margin:0 0 10px}small{color:var(--mu)}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:18px;padding:14px;margin-bottom:9px;box-shadow:0 1px 2px rgba(0,0,0,.03),0 6px 18px -8px rgba(0,0,0,.08)}
+.row{display:flex;align-items:center;gap:10px;cursor:pointer}.fl{flex:1;min-width:0}.fl b,.fl small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.em{font-size:26px;width:44px;height:44px;border-radius:13px;background:var(--bg);display:grid;place-items:center;flex:none;overflow:hidden}
+.em img{width:100%;height:100%;object-fit:cover}
+.hero{background:var(--pr);color:#fff;border-radius:22px;padding:18px;margin-bottom:16px;box-shadow:0 10px 26px -10px color-mix(in srgb,var(--pr) 70%,transparent)}.hero small{color:#f2d3da}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}.two b{font-size:20px;display:block}.hero .ok{color:#bbf7d0}.hero .bad{color:#fecaca}
+.ok{color:var(--ok);font-weight:700}.bad{color:var(--bad);font-weight:700}
+button,input,select{font:inherit;color:inherit}
+input,select{width:100%;padding:12px;border:1px solid var(--bd);border-radius:14px;background:var(--cd);margin-bottom:8px}
+button{border:0;border-radius:14px;padding:12px 14px;background:var(--bd);cursor:pointer}
+.pri{background:var(--pr);color:#fff;width:100%;font-weight:700;margin-top:6px}.ghost{background:none;color:var(--mu);padding:8px}
+.icon{background:none;color:var(--tx);padding:8px;font-size:18px}
+.fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom));background:var(--pr);color:#fff;font-weight:800;padding:14px 26px;border-radius:30px;box-shadow:0 10px 24px -8px color-mix(in srgb,var(--pr) 65%,transparent);z-index:5}
+.tabs{display:flex;gap:6px;overflow-x:auto;margin:10px 0}.tab{white-space:nowrap;background:var(--cd);border:1px solid var(--bd);border-radius:14px}.tab.on,.chip.on,.seg .on{background:var(--pr);color:#fff;border-color:var(--pr)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.chip{padding:8px 10px;background:var(--bg);border:1px solid var(--bd);border-radius:14px}
+.logo{width:38px;height:38px;border-radius:11px;background:var(--pr);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:800;font-size:19px;vertical-align:middle;box-shadow:0 4px 10px -4px color-mix(in srgb,var(--pr) 60%,transparent)}
+.seg{display:flex;gap:6px;margin:6px 0}.seg button{flex:1}
+.sp{display:flex;align-items:center;gap:8px}.sp label{flex:1}.sp input[type=number]{width:120px;margin:0 0 6px}.sp input[type=checkbox]{width:auto;margin:0 6px 0 0}
+.x{background:none;color:var(--mu);padding:6px}.empty{text-align:center;color:var(--mu);padding:26px 0}
+.bd{position:fixed;inset:0;background:#0008;display:flex;align-items:flex-end;justify-content:center;z-index:9}
+.sheet{background:var(--bg);width:100%;max-width:520px;max-height:92vh;overflow:auto;border-radius:24px 24px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+#toast{position:fixed;top:calc(12px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:12px;z-index:20;display:none;max-width:90%}
+.bar{height:8px;border-radius:4px;background:var(--pr);margin-top:4px}.link{word-break:break-all;font-size:13px;background:var(--bg);padding:8px;border-radius:8px;margin:8px 0}
+label{display:block;margin:6px 0;color:var(--mu);font-size:14px}
+.thumb{width:100%;max-height:160px;object-fit:cover;border-radius:10px;margin:6px 0}
+.payer{display:flex;gap:8px;align-items:center;margin-bottom:6px}.payer select{margin:0}.payer input{margin:0;width:110px}
+.stat{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bd)}.stat:last-child{border:0}
+.act{display:flex;gap:8px;align-items:flex-start}.act .em{width:34px;height:34px;font-size:16px}
+.sw{display:flex;gap:6px}
+</style></head><body><div id="app"></div><div id="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script>
+const sb=supabase.createClient('https://zovrgpevmdgakapahxqp.supabase.co','eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpvdnJncGV2bWRnYWthcGFoeHFwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyNjUwMTUsImV4cCI6MjEwNTg0MTAxNX0.UT15Z8gFkttsFGVTFf6H9i5nhMvcvBWF7CgXXoqfcAc');
+const $=s=>document.querySelector(s),esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=n=>Math.round(n).toLocaleString('ru-RU')+" so'm";
+const CATS={ovqat:['🍽️',{uz:'Ovqat',ru:'Еда'},'#f97316'],transport:['🚕',{uz:'Transport',ru:'Транспорт'},'#3b82f6'],uy:['🏠',{uz:'Uy-joy',ru:'Жильё'},'#8b5cf6'],xarid:['🛒',{uz:'Xarid',ru:'Покупки'},'#ec4899'],dam:['🎉',{uz:"Ko'ngilochar",ru:'Развлечения'},'#eab308'],boshqa:['📦',{uz:'Boshqa',ru:'Другое'},'#64748b']};
+const T={
+ uz:{app:'Ulush',tag:"Xarajatlarni do'stlar bilan oson bo'ling",login:'Kirish',signup:"Ro'yxatdan o'tish",name:'Ismingiz',phone:'Telefon: 90 123 45 67',pass:'Parol (kamida 6 belgi)',nosms:'SMS kod kerak emas. Telefon raqam va parol yetarli.',hello:'Salom',youget:'Sizga qaytaradilar',youowe:'Siz qaytarasiz',nogroups:"Hali guruh yo'q. Birinchi guruhni yarating 👇",newgroup:'+ Guruh',members:"a'zo",even:'Teng',tExp:'Xarajatlar',tBal:'Balans',tChart:'Diagramma',tMem:"A'zolar",tAct:'Faoliyat',back:'Orqaga',logout:'Chiqish',newExp:'+ Xarajat',noexp:"Hali xarajat yo'q. «+ Xarajat» ni bosing",paidby:"to'ladi",payment:"To'lov",settleTitle:'Qanday hisob-kitob qilish kerak',allSettled:"Hamma hisob-kitob qilgan 🎉",settled:"To'landi ✓",inviteLink:'Havola orqali taklif qilish',shareLink:'Havolani ulashish',addByPhone:"Telefon raqam orqali qo'shish",fname:'Ismi',addBtn:"Qo'shish",notJoined:'(hali kirmagan)',csv:'CSV yuklab olish',newGroupTitle:'Yangi guruh',groupName:'Guruh nomi (masalan: Uy, Sayohat)',create:'Yaratish',newExpTitle:'Yangi xarajat',what:'Nima uchun? (kechki ovqat)',amount:"Summa (so'm)",whoPaid:"Kim to'ladi?",addPayer:'+ yana to\u2019lovchi',splitWho:"Kimlar orasida bo'linadi?",eqSplit:'Teng',exSplit:"Summa bo'yicha",recurring:'Takrorlansin',recNo:"Yo'q",recWeek:'Har hafta',recMonth:'Har oy',note:'Izoh (ixtiyoriy)',receipt:'Chek rasmi',save:'Saqlash',totalCat:'jami',topSpender:"Kim qancha to'lagan",stats:'Statistika',biggestExp:'Eng katta xarajat',topCat:"Ko'p xarajat toifasi",activeDays:'Faol kunlar',trend:'Oylik dinamika',noChart:"Diagramma xarajat qo'shilgach chiqadi",groupPhoto:'Guruh rasmi',theme:'Mavzu',lang:'Til',noActivity:"Hali faoliyat yo'q",added:"qo'shdi",joined:"qo'shildi",err:'Xatolik',needName:'Ismingizni yozing',needPhoneValid:"Telefon raqamni to'g'ri kiriting: 90 123 45 67",needPass:'Parol kamida 6 belgi bo\'lsin',badLogin:'Raqam yoki parol xato',alreadyReg:"Bu raqam allaqachon ro'yxatdan o'tgan, «Kirish» ni bosing",needGroupName:'Guruh nomini yozing',needTitle:'Nima uchun ekanini yozing',needAmount:'Summani kiriting',needOne:'Kamida bitta odamni tanlang',sumMismatch:v=>"Summalar yig'indisi "+v+", kerak: to'g'irlang",expAdded:"Xarajat qo'shildi ✓",delConfirm:"Bu yozuvni o'chirasizmi?",already:'Bu raqam guruhda bor',added2:"Qo'shildi ✓",linkCopied:'Havola nusxalandi ✓',settledMsg:'Hisob-kitob yozildi ✓',joinedMsg:"Guruhga qo'shildingiz 🎉",joinFail:'Taklif havolasi yaroqsiz',welcome:'Salom',admin:'Admin',removeConfirm:"Bu odamni guruhdan o'chirasizmi? Uning xarajatlari ham o'chadi.",removed:"O'chirildi ✓",singleFor:'Faqat bitta kishi uchun sotib oldim',forWhom:'Kimga?'},
+ ru:{app:'Ulush',tag:'Делите расходы с друзьями легко',login:'Войти',signup:'Регистрация',name:'Ваше имя',phone:'Телефон: 90 123 45 67',pass:'Пароль (минимум 6 символов)',nosms:'СМС-код не нужен. Достаточно номера и пароля.',hello:'Привет',youget:'Вам должны',youowe:'Вы должны',nogroups:'Пока нет групп. Создайте первую 👇',newgroup:'+ Группа',members:'участник(ов)',even:'Поровну',tExp:'Расходы',tBal:'Баланс',tChart:'Диаграмма',tMem:'Участники',tAct:'Активность',back:'Назад',logout:'Выйти',newExp:'+ Расход',noexp:'Пока нет расходов. Нажмите «+ Расход»',paidby:'заплатил(а)',payment:'Платёж',settleTitle:'Как рассчитаться',allSettled:'Все рассчитались 🎉',settled:'Оплачено ✓',inviteLink:'Пригласить по ссылке',shareLink:'Поделиться ссылкой',addByPhone:'Добавить по номеру телефона',fname:'Имя',addBtn:'Добавить',notJoined:'(ещё не вошёл)',csv:'Скачать CSV',newGroupTitle:'Новая группа',groupName:'Название группы (например: Дом, Поездка)',create:'Создать',newExpTitle:'Новый расход',what:'За что? (ужин)',amount:'Сумма (сум)',whoPaid:'Кто заплатил?',addPayer:'+ ещё плательщик',splitWho:'Между кем делится?',eqSplit:'Поровну',exSplit:'По сумме',recurring:'Повторять',recNo:'Нет',recWeek:'Каждую неделю',recMonth:'Каждый месяц',note:'Заметка (необязательно)',receipt:'Фото чека',save:'Сохранить',totalCat:'итого',topSpender:'Кто сколько заплатил',stats:'Статистика',biggestExp:'Самый большой расход',topCat:'Частая категория',activeDays:'Активных дней',trend:'Динамика по месяцам',noChart:'Диаграмма появится после расхода',groupPhoto:'Фото группы',theme:'Тема',lang:'Язык',noActivity:'Пока нет активности',added:'добавил(а)',joined:'присоединился(лась)',err:'Ошибка',needName:'Введите имя',needPhoneValid:'Введите номер верно: 90 123 45 67',needPass:'Пароль минимум 6 символов',badLogin:'Неверный номер или пароль',alreadyReg:'Этот номер уже зарегистрирован, нажмите «Войти»',needGroupName:'Введите название группы',needTitle:'Укажите, за что расход',needAmount:'Введите сумму',needOne:'Выберите хотя бы одного человека',sumMismatch:v=>'Сумма долей '+v+', нужно исправить',expAdded:'Расход добавлен ✓',delConfirm:'Удалить запись?',already:'Этот номер уже в группе',added2:'Добавлено ✓',linkCopied:'Ссылка скопирована ✓',settledMsg:'Расчёт записан ✓',joinedMsg:'Вы присоединились к группе 🎉',joinFail:'Ссылка-приглашение недействительна',welcome:'Привет',admin:'Админ',removeConfirm:'Удалить этого участника из группы? Его расходы тоже удалятся.',removed:'Удалено ✓',singleFor:'Купил(а) только для одного человека',forWhom:'Кому?'}
+};
+let S={me:null,groups:[],members:[],exps:[],acts:[],gid:null,tab:'x',am:'in',cat:'ovqat',mode:'eq',lang:localStorage.getItem('ulush_lang')||'uz',recFreq:'none',photoData:null,payers:[]};
+document.documentElement.setAttribute('data-theme',localStorage.getItem('ulush_theme')||'');
+function t(k,...a){const v=T[S.lang][k];return typeof v=='function'?v(...a):v}
+function toggleTheme(){const cur=document.documentElement.getAttribute('data-theme');const nx=cur=='dark'?'':'dark';document.documentElement.setAttribute('data-theme',nx);localStorage.setItem('ulush_theme',nx)}
+function setLang(l){S.lang=l;localStorage.setItem('ulush_lang',l);view()}
+try{const j=new URLSearchParams(location.search).get('join');if(j)localStorage.setItem('ulush_join',j)}catch(e){}
+function toast(m){const el=$('#toast');el.textContent=m;el.style.display='block';clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',3500)}
+const pn=p=>{let d=String(p).replace(/\D/g,'');if(d.length==9)d='998'+d;return d.length==12?d:null};
+const mem=id=>S.members.find(m=>m.id==id),gmem=g=>S.members.filter(m=>m.group_id==g),myM=g=>S.members.find(m=>m.group_id==g&&m.user_id==S.me.id);
+function payersOf(e){if(e.expense_payers&&e.expense_payers.length)return e.expense_payers.map(p=>[p.member_id,Number(p.amount)]);return[[e.paid_by,Number(e.amount)]]}
+function bal(g){const n={};gmem(g).forEach(m=>n[m.id]=0);S.exps.filter(e=>e.group_id==g).forEach(e=>{payersOf(e).forEach(([mid,amt])=>n[mid]=(n[mid]||0)+amt);e.splits.forEach(s=>n[s.member_id]=(n[s.member_id]||0)-Number(s.share))});return n}
+function settle(g){const n=bal(g),c=[],d=[];for(const k in n){if(n[k]>=1)c.push([k,n[k]]);else if(n[k]<=-1)d.push([k,-n[k]])}c.sort((a,b)=>b[1]-a[1]);d.sort((a,b)=>b[1]-a[1]);const r=[];let i=0,j=0;while(i<c.length&&j<d.length){const x=Math.min(c[i][1],d[j][1]);r.push({from:d[j][0],to:c[i][0],amt:x});c[i][1]-=x;d[j][1]-=x;if(c[i][1]<1)i++;if(d[j][1]<1)j++}return r}
+
+async function boot(){try{
+ const{data:{session}}=await sb.auth.getSession();
+ if(!session){S.me=null;return view()}
+ const{data:p}=await sb.from('profiles').select('*').eq('id',session.user.id).maybeSingle();
+ S.me=p||{id:session.user.id,name:'',phone:''};
+ if(p&&p.lang&&!localStorage.getItem('ulush_lang')){S.lang=p.lang}
+ let j=null;try{j=localStorage.getItem('ulush_join')}catch(e){}
+ if(j){const r=await sb.rpc('join_group',{p_code:j});if(r.error)toast(t('joinFail'));else{S.gid=r.data;toast(t('joinedMsg'))}try{localStorage.removeItem('ulush_join')}catch(e){}history.replaceState(null,'',location.pathname)}
+ await load();
+ for(const g of S.groups){try{await sb.rpc('run_recurring',{p_group:g.id})}catch(e){}}
+ await load();
+ view()}catch(e){toast(t('err')+': '+e.message)}}
+async function load(){
+ const a=await sb.from('members').select('*,groups(*)');if(a.error)throw a.error;
+ S.members=a.data||[];const gm={};S.members.forEach(m=>{if(m.groups)gm[m.group_id]=m.groups});
+ S.groups=Object.values(gm).sort((x,y)=>String(y.created_at).localeCompare(String(x.created_at)));
+ const b=await sb.from('expenses').select('*,splits(*),expense_payers(*)').order('spent_on',{ascending:false}).order('created_at',{ascending:false});if(b.error)throw b.error;S.exps=b.data||[];
+ const c=await sb.from('activity').select('*').order('created_at',{ascending:false}).limit(60);S.acts=c.data||[]}
+async function auth(kind){try{
+ const phone=pn($('#ph').value);if(!phone)return toast(t('needPhoneValid'));
+ const pw=$('#pw').value;if(pw.length<6)return toast(t('needPass'));
+ const email=phone+'@ulush.app';let r;
+ if(kind=='up'){const name=$('#nm').value.trim();if(!name)return toast(t('needName'));r=await sb.auth.signUp({email,password:pw,options:{data:{name,phone}}})}
+ else r=await sb.auth.signInWithPassword({email,password:pw});
+ if(r.error)return toast(/invalid/i.test(r.error.message)?t('badLogin'):r.error.message);
+ if(!r.data.session){const r2=await sb.auth.signInWithPassword({email,password:pw});if(r2.error)return toast(kind=='up'?t('alreadyReg'):t('badLogin'))}
+ boot()}catch(e){toast(t('err')+': '+e.message)}}
+async function out(){await sb.auth.signOut();S.me=null;S.gid=null;view()}
+async function compressImage(file,maxDim,quality){try{
+ const bmp=await createImageBitmap(file);let w=bmp.width,h=bmp.height;
+ if(w>h&&w>maxDim){h=Math.round(h*maxDim/w);w=maxDim}else if(h>maxDim){w=Math.round(w*maxDim/h);h=maxDim}
+ const cv=document.createElement('canvas');cv.width=w;cv.height=h;cv.getContext('2d').drawImage(bmp,0,0,w,h);
+ const blob=await new Promise(res=>cv.toBlob(res,'image/jpeg',quality));
+ return blob?new File([blob],'photo.jpg',{type:'image/jpeg'}):file
+ }catch(e){return file}}
+async function uploadFile(file,prefix,maxDim=1000,quality=0.7){const small=await compressImage(file,maxDim,quality);
+ const path=prefix+'/'+crypto.randomUUID()+'.jpg';
+ const up=await sb.storage.from('media').upload(path,small,{contentType:'image/jpeg'});if(up.error)throw up.error;
+ return sb.storage.from('media').getPublicUrl(path).data.publicUrl}
+
+function view(){const a=$('#app');a.innerHTML=!S.me?authH():S.gid?groupH(S.gid):homeH()}
+function topbar(){return `<div class="sw"><button class="icon" onclick="toggleTheme()">🌗</button><select style="width:auto;padding:8px;margin:0" onchange="setLang(this.value)"><option value="uz" ${S.lang=='uz'?'selected':''}>UZ</option><option value="ru" ${S.lang=='ru'?'selected':''}>RU</option></select></div>`}
+function authH(){const up=S.am=='up';return `<div style="display:flex;justify-content:flex-end">${topbar()}</div><div style="text-align:center;margin:20px 0 20px"><div class="logo" style="width:60px;height:60px;border-radius:18px;font-size:28px;margin:0 auto 14px">U</div><h1>${t('app')}</h1><small>${t('tag')}</small></div>
+<div class="seg"><button class="${up?'':'on'}" onclick="S.am='in';view()">${t('login')}</button><button class="${up?'on':''}" onclick="S.am='up';view()">${t('signup')}</button></div>
+${up?`<input id="nm" placeholder="${t('name')}" autocomplete="name">`:''}<input id="ph" type="tel" placeholder="${t('phone')}" autocomplete="tel"><input id="pw" type="password" placeholder="${t('pass')}" autocomplete="${up?'new-password':'current-password'}">
+<button class="pri" onclick="auth('${up?'up':'in'}')">${up?t('signup'):t('login')}</button><p class="empty">${t('nosms')}</p>`}
+function homeH(){let pos=0,neg=0;const rows=S.groups.map(g=>{const m=myM(g.id),b=m?(bal(g.id)[m.id]||0):0;if(b>=1)pos+=b;else if(b<=-1)neg-=b;
+ return `<div class="card row" onclick="S.gid='${g.id}';S.tab='x';view()"><div class="em">${g.photo_url?`<img src="${esc(g.photo_url)}">`:esc(g.emoji)}</div><div class="fl"><b>${esc(g.name)}</b><small>${gmem(g.id).length} ${t('members')}</small></div><div class="${b>=0?'ok':'bad'}">${Math.abs(b)<1?t('even'):(b>0?'+':'−')+fmt(Math.abs(b))}</div></div>`}).join('');
+return `<header><h1 style="display:flex;align-items:center;gap:10px"><span class="logo">U</span> ${t('app')}</h1><div class="sw">${topbar()}<button class="ghost" onclick="out()">${t('logout')}</button></div></header>
+<div class="hero"><small>${t('hello')}, ${esc(S.me.name)}!</small><div class="two"><div><small>${t('youget')}</small><b class="ok">${fmt(pos)}</b></div><div><small>${t('youowe')}</small><b class="bad">${fmt(neg)}</b></div></div></div>
+${rows||`<p class="empty">${t('nogroups')}</p>`}<button class="fab" onclick="newG()">${t('newgroup')}</button>`}
+function groupH(g){const G=S.groups.find(x=>x.id==g);if(!G){S.gid=null;return homeH()}
+const tabs=[['x',t('tExp')],['b',t('tBal')],['d',t('tChart')],['a',t('tMem')],['h',t('tAct')]].map(([k,tt])=>`<button class="tab ${S.tab==k?'on':''}" onclick="S.tab='${k}';view()">${tt}</button>`).join('');
+const ex=S.exps.filter(e=>e.group_id==g);let body='';
+if(S.tab=='x')body=ex.map(e=>{const c=CATS[e.category]||CATS.boshqa,pay=e.kind=='payment',ps=payersOf(e);
+ const who=pay?esc((mem(e.paid_by)||{}).name)+' → '+esc((mem((e.splits[0]||{}).member_id)||{}).name):esc(e.title);
+ const sub=pay?t('payment'):(ps.length>1?ps.map(p=>esc((mem(p[0])||{}).name)).join(', ')+' '+t('paidby'):esc((mem(e.paid_by)||{}).name)+' '+t('paidby'))+', '+e.spent_on;
+ return `<div class="card row" style="cursor:default"><div class="em">${e.receipt_url?`<img src="${esc(e.receipt_url)}">`:(pay?'🤝':c[0])}</div><div class="fl"><b>${who}</b><small>${sub}${e.note?' · '+esc(e.note):''}</small></div><b>${fmt(e.amount)}</b><button class="x" onclick="delE('${e.id}')">✕</button></div>`}).join('')||`<p class="empty">${t('noexp')}</p>`;
+if(S.tab=='b'){const n=bal(g),st=settle(g);body=gmem(g).map(m=>{const v=n[m.id]||0;return `<div class="card row" style="cursor:default"><div class="fl"><b>${esc(m.name)}</b></div><div class="${v>=0?'ok':'bad'}">${Math.abs(v)<1?t('even'):(v>0?(S.lang=='ru'?'получит ':'oladi ')+fmt(Math.abs(v)):(S.lang=='ru'?'должен ':'beradi ')+fmt(Math.abs(v)))}</div></div>`}).join('')+`<h3 style="margin-top:16px">${t('settleTitle')}</h3>`+(st.map(s=>`<div class="card"><b>${esc((mem(s.from)||{}).name)}</b> → <b>${esc((mem(s.to)||{}).name)}</b>: <b>${fmt(s.amt)}</b><button class="pri" onclick="payModal('${s.from}','${s.to}',${Math.round(s.amt)})">${t('settled')}</button></div>`).join('')||`<p class="empty">${t('allSettled')}</p>`)}
+if(S.tab=='d'){const cat={},pm={};let tot=0,maxE=null;const months={};
+ ex.filter(e=>e.kind=='expense').forEach(e=>{cat[e.category]=(cat[e.category]||0)+Number(e.amount);payersOf(e).forEach(([mid,amt])=>pm[mid]=(pm[mid]||0)+amt);tot+=Number(e.amount);if(!maxE||e.amount>maxE.amount)maxE=e;const mo=String(e.spent_on).slice(0,7);months[mo]=(months[mo]||0)+Number(e.amount)});
+ if(!tot)body=`<p class="empty">${t('noChart')}</p>`;else{let off=0;const ents=Object.entries(cat).sort((a,b)=>b[1]-a[1]),mx=Math.max(...Object.values(pm),1);
+ const arcs=ents.map(([k,v])=>{const p=v/tot*100,s=`<circle r="15.9155" cx="21" cy="21" fill="none" stroke="${(CATS[k]||CATS.boshqa)[2]}" stroke-width="6" stroke-dasharray="${p} ${100-p}" stroke-dashoffset="${25-off}"/>`;off+=p;return s}).join('');
+ const mo=Object.entries(months).sort((a,b)=>a[0].localeCompare(b[0]));const mmx=Math.max(...mo.map(m=>m[1]),1);
+ const pts=mo.map(([k,v],i)=>[mo.length>1?i/(mo.length-1)*280:0,60-v/mmx*55]);
+ const poly=pts.map(p=>p[0]+','+(p[1]+2)).join(' ');
+ const topCatK=ents[0]?ents[0][0]:null,topSpK=Object.entries(pm).sort((a,b)=>b[1]-a[1])[0];
+ body=`<div class="card" style="text-align:center"><svg viewBox="0 0 42 42" width="220" height="220"><circle r="15.9155" cx="21" cy="21" fill="none" stroke="var(--bd)" stroke-width="6"/>${arcs}<text x="21" y="21" text-anchor="middle" font-size="3.4" font-weight="700" fill="currentColor">${fmt(tot)}</text><text x="21" y="25" text-anchor="middle" font-size="2.2" fill="var(--mu)">${t('totalCat')}</text></svg></div>
+ ${ents.map(([k,v])=>{const c=CATS[k]||CATS.boshqa;return `<div class="card row" style="cursor:default"><span style="width:14px;height:14px;border-radius:50%;background:${c[2]}"></span><div class="fl"><b>${c[0]} ${c[1][S.lang]}</b></div><b>${fmt(v)}</b><small>${Math.round(v/tot*100)}%</small></div>`}).join('')}
+ <h3 style="margin-top:16px">${t('topSpender')}</h3>${Object.entries(pm).map(([k,v])=>`<div class="card"><div style="display:flex;justify-content:space-between"><b>${esc((mem(k)||{}).name)}</b><span>${fmt(v)}</span></div><div class="bar" style="width:${v/mx*100}%"></div></div>`).join('')}
+ ${mo.length>1?`<h3 style="margin-top:16px">${t('trend')}</h3><div class="card"><svg viewBox="-4 -4 288 68" width="100%" height="100"><polyline fill="none" stroke="var(--pr)" stroke-width="2" points="${poly}"/>${pts.map(p=>`<circle cx="${p[0]}" cy="${p[1]+2}" r="2.5" fill="var(--pr)"/>`).join('')}</svg><div style="display:flex;justify-content:space-between"><small>${mo[0][0]}</small><small>${mo[mo.length-1][0]}</small></div></div>`:''}
+ <h3 style="margin-top:16px">${t('stats')}</h3><div class="card">
+ <div class="stat"><span>${t('biggestExp')}</span><b>${maxE?esc(maxE.title)+' · '+fmt(maxE.amount):'—'}</b></div>
+ <div class="stat"><span>${t('topCat')}</span><b>${topCatK?CATS[topCatK][0]+' '+CATS[topCatK][1][S.lang]:'—'}</b></div>
+ <div class="stat"><span>${t('activeDays')}</span><b>${new Set(ex.map(e=>e.spent_on)).size}</b></div>
+ </div>`}}
+if(S.tab=='a'){const link=location.origin+location.pathname+'?join='+G.code,isAdmin=S.me.id==G.created_by;body=`<div class="card"><label>${t('groupPhoto')}</label><input type="file" accept="image/*" onchange="setGroupPhoto(this.files[0])"><b>${t('inviteLink')}</b><div class="link">${esc(link)}</div><button class="pri" onclick="share('${esc(link)}')">${t('shareLink')}</button></div>
+ <div class="card"><b>${t('addByPhone')}</b><input id="mn" placeholder="${t('fname')}"><input id="mp" type="tel" placeholder="${t('phone')}"><button class="pri" onclick="addM()">${t('addBtn')}</button></div>
+ ${gmem(g).map(m=>{const isMeAdmin=m.user_id&&m.user_id==G.created_by;return `<div class="card row" style="cursor:default"><div class="fl"><b>${esc(m.name)}${isMeAdmin?' 👑 '+t('admin'):''}</b><small>${esc(m.phone||'')}${m.user_id?'':' '+t('notJoined')}</small></div>${isAdmin&&!isMeAdmin?`<button class="x" onclick="removeMember('${m.id}')">✕</button>`:''}</div>`}).join('')}<button class="pri" style="background:var(--bd);color:var(--tx)" onclick="csv()">${t('csv')}</button>`}
+if(S.tab=='h')body=(S.acts.filter(x=>x.group_id==g).map(x=>{const p=mem(x.actor_id);return `<div class="card act"><div class="em">${x.kind=='join'?'🎉':(x.kind=='payment'?'🤝':'💸')}</div><div class="fl"><b>${esc(p?p.name:'—')}</b> ${x.kind=='join'?t('joined'):t('added')} <b>${esc(x.detail||'')}</b><small>${new Date(x.created_at).toLocaleString()}</small></div></div>`}).join(''))||`<p class="empty">${t('noActivity')}</p>`;
+return `<header><button class="ghost" onclick="S.gid=null;view()">← ${t('back')}</button><b>${G.photo_url?`<img src="${esc(G.photo_url)}" style="width:24px;height:24px;border-radius:6px;object-fit:cover;vertical-align:middle">`:esc(G.emoji)} ${esc(G.name)}</b>${topbar()}</header><div class="tabs">${tabs}</div>${body}${S.tab=='x'?`<button class="fab" onclick="newE()">${t('newExp')}</button>`:''}`}
+
+function modal(h){closeM();const d=document.createElement('div');d.className='bd';d.id='md';d.onclick=e=>{if(e.target==d)closeM()};d.innerHTML='<div class="sheet">'+h+'</div>';document.body.appendChild(d)}
+function closeM(){const d=$('#md');if(d)d.remove()}
+function newG(){modal(`<h3>${t('newGroupTitle')}</h3><input id="gn" placeholder="${t('groupName')}"><div class="chips" id="ge">${['🏠','✈️','🍕','🎉','🚗','💼','❤️','👥'].map((e,i)=>`<button class="chip ${i==7?'on':''}" onclick="document.querySelectorAll('#ge .chip').forEach(x=>x.classList.remove('on'));this.classList.add('on')">${e}</button>`).join('')}</div><button class="pri" onclick="saveG()">${t('create')}</button>`)}
+async function saveG(){try{const n=$('#gn').value.trim();if(!n)return toast(t('needGroupName'));const e=$('#ge .on').textContent;const r=await sb.rpc('create_group',{p_name:n,p_emoji:e});if(r.error)throw r.error;closeM();await load();S.gid=r.data;S.tab='a';view()}catch(e){toast(t('err')+': '+e.message)}}
+async function setGroupPhoto(file){if(!file)return;try{toast('...');const url=await uploadFile(file,'groups');const r=await sb.from('groups').update({photo_url:url}).eq('id',S.gid);if(r.error)throw r.error;await load();view();toast(t('added2'))}catch(e){toast(t('err')+': '+e.message)}}
+function newE(){const ms=gmem(S.gid),me=myM(S.gid);S.cat='ovqat';S.mode='eq';S.recFreq='none';S.photoData=null;S.payers=[me?me.id:(ms[0]||{}).id];
+modal(`<h3>${t('newExpTitle')}</h3><input id="t" placeholder="${t('what')}"><input id="am" type="number" inputmode="numeric" placeholder="${t('amount')}"><div class="chips" id="cc">${Object.entries(CATS).map(([k,c])=>`<button class="chip ${k=='ovqat'?'on':''}" onclick="S.cat='${k}';document.querySelectorAll('#cc .chip').forEach(x=>x.classList.remove('on'));this.classList.add('on')">${c[0]} ${c[1][S.lang]}</button>`).join('')}</div>
+<label>${t('whoPaid')}</label><div id="payersWrap"></div><button type="button" class="ghost" onclick="addPayerRow()">${t('addPayer')}</button>
+<div class="card row" style="margin:10px 0"><label style="flex:1;margin:0"><input type="checkbox" id="single" onchange="toggleSingle(this.checked)"> ${t('singleFor')}</label></div>
+<div id="singleWrap" style="display:none"><label>${t('forWhom')}</label><select id="singleSel">${ms.map(m=>`<option value="${m.id}">${esc(m.name)}</option>`).join('')}</select></div>
+<div id="splitWrap"><label>${t('splitWho')}</label><div class="seg"><button id="m1" class="on" onclick="setMode('eq')">${t('eqSplit')}</button><button id="m2" onclick="setMode('ex')">${t('exSplit')}</button></div>
+${ms.map(m=>`<div class="sp"><label><input type="checkbox" class="ck" value="${m.id}" checked>${esc(m.name)}</label><input class="ev" data-m="${m.id}" type="number" inputmode="numeric" placeholder="0" style="display:none"></div>`).join('')}</div>
+<label>${t('recurring')}</label><select id="rf" onchange="S.recFreq=this.value"><option value="none">${t('recNo')}</option><option value="weekly">${t('recWeek')}</option><option value="monthly">${t('recMonth')}</option></select>
+<input id="nt" placeholder="${t('note')}"><label>${t('receipt')}</label><input type="file" accept="image/*" onchange="pickReceipt(this.files[0])"><div id="rprev"></div>
+<button class="pri" onclick="saveE()">${t('save')}</button>`);
+renderPayers();}
+function toggleSingle(on){$('#singleWrap').style.display=on?'block':'none';$('#splitWrap').style.display=on?'none':'block'}
+function renderPayers(){const ms=gmem(S.gid);$('#payersWrap').innerHTML=S.payers.map((pid,i)=>`<div class="payer"><select onchange="S.payers[${i}]=this.value">${ms.map(m=>`<option value="${m.id}" ${m.id==pid?'selected':''}>${esc(m.name)}</option>`).join('')}</select>${S.payers.length>1?`<input type="number" class="pamt" data-i="${i}" placeholder="0">`:''}${S.payers.length>1?`<button type="button" class="x" onclick="S.payers.splice(${i},1);renderPayers()">✕</button>`:''}</div>`).join('')}
+function addPayerRow(){const ms=gmem(S.gid);const unused=ms.find(m=>!S.payers.includes(m.id));S.payers.push(unused?unused.id:ms[0].id);renderPayers()}
+async function pickReceipt(file){if(!file)return;const r=new FileReader();r.onload=()=>{S.photoData=file;$('#rprev').innerHTML=`<img class="thumb" src="${r.result}">`};r.readAsDataURL(file)}
+function setMode(m){S.mode=m;$('#m1').classList.toggle('on',m=='eq');$('#m2').classList.toggle('on',m=='ex');document.querySelectorAll('.ev').forEach(i=>i.style.display=m=='ex'?'block':'none')}
+async function saveE(){try{const title=$('#t').value.trim(),amount=Math.round(Number($('#am').value)),note=$('#nt').value.trim();
+ if(!title)return toast(t('needTitle'));if(!(amount>0))return toast(t('needAmount'));
+ let sp;
+ if($('#single').checked){const rid=$('#singleSel').value;sp=[[rid,amount]]}
+ else{const ids=[...document.querySelectorAll('.ck:checked')].map(c=>c.value);if(!ids.length)return toast(t('needOne'));
+ if(S.mode=='eq'){const b=Math.floor(amount/ids.length),r=amount-b*ids.length;sp=ids.map((id,i)=>[id,b+(i<r?1:0)])}
+ else{sp=ids.map(id=>[id,Math.round(Number(document.querySelector('.ev[data-m="'+id+'"]').value)||0)]);const sum=sp.reduce((a,p)=>a+p[1],0);if(sum!=amount)return toast(t('sumMismatch',fmt(sum)))}}
+ let payers;if(S.payers.length==1){payers=[[S.payers[0],amount]]}
+ else{payers=S.payers.map((pid,i)=>[pid,Math.round(Number((document.querySelector('.pamt[data-i="'+i+'"]')||{}).value)||0)]);const sp2=payers.reduce((a,p)=>a+p[1],0);if(sp2!=amount)return toast(t('sumMismatch',fmt(sp2)))}
+ let receiptUrl=null;if(S.photoData){toast('...');receiptUrl=await uploadFile(S.photoData,'receipts')}
+ const r=await sb.rpc('add_expense_full',{p_group:S.gid,p_title:title,p_amount:amount,p_category:S.cat,p_note:note||null,p_receipt:receiptUrl,
+  p_payers:payers.map(p=>({member_id:p[0],amount:p[1]})),p_splits:sp.map(p=>({member_id:p[0],share:p[1]}))});
+ if(r.error)throw r.error;
+ if($('#rf').value!='none'){const rt=await sb.from('recurring_templates').insert({group_id:S.gid,title,amount,category:S.cat,paid_by:payers[0][0],freq:$('#rf').value,
+   split_json:sp.map(p=>({member_id:p[0],share:p[1]})),next_date:new Date(Date.now()+(($('#rf').value=='weekly')?7:30)*86400000).toISOString().slice(0,10)});if(rt.error)throw rt.error}
+ closeM();await load();view();toast(t('expAdded'))}catch(e){toast(t('err')+': '+e.message)}}
+function payModal(f,tt,max){modal(`<h3>${t('settled')}</h3><p><b>${esc((mem(f)||{}).name)}</b> → <b>${esc((mem(tt)||{}).name)}</b></p>
+<label>${t('amount')} (${S.lang=='ru'?'максимум':'maksimum'} ${fmt(max)})</label><input id="pa" type="number" inputmode="numeric" value="${max}">
+<div class="seg"><button onclick="document.getElementById('pa').value=${Math.round(max/2)}">50%</button><button onclick="document.getElementById('pa').value=${max}">100%</button></div>
+<button class="pri" onclick="pay('${f}','${tt}',${max})">${t('save')}</button>`)}
+async function pay(f,tt,max){try{const v=Math.round(Number(($('#pa')||{}).value));const a=($('#pa')?v:max);
+ if(!(a>0))return toast(t('needAmount'));const amt=Math.min(a,max);
+ const r=await sb.rpc('add_expense_full',{p_group:S.gid,p_title:t('payment'),p_amount:amt,p_category:'boshqa',p_note:null,p_receipt:null,
+ p_payers:[{member_id:f,amount:amt}],p_splits:[{member_id:tt,share:amt}]});if(r.error)throw r.error;
+ await sb.from('expenses').update({kind:'payment'}).eq('id',r.data);closeM();await load();view();toast(t('settledMsg'))}catch(e){toast(t('err')+': '+e.message)}}
+async function delE(id){if(!confirm(t('delConfirm')))return;const r=await sb.from('expenses').delete().eq('id',id);if(r.error)return toast(r.error.message);await load();view()}
+async function removeMember(id){if(!confirm(t('removeConfirm')))return;try{const r=await sb.rpc('remove_member',{p_member:id});if(r.error)throw r.error;await load();view();toast(t('removed'))}catch(e){toast(t('err')+': '+e.message)}}
+async function addM(){try{const nm=$('#mn').value.trim(),ph=pn($('#mp').value);if(!ph)return toast(t('needPhoneValid'));
+ if(gmem(S.gid).some(m=>m.phone==ph))return toast(t('already'));const r=await sb.rpc('add_member',{p_group:S.gid,p_name:nm,p_phone:ph});if(r.error)throw r.error;await load();view();toast(t('added2'))}catch(e){toast(t('err')+': '+e.message)}}
+async function share(l){const G=S.groups.find(x=>x.id==S.gid),tx=`«${G.name}» ${S.lang=='ru'?'группе в Ulush':"guruhiga Ulush ilovasida qo'shiling"}:`;
+ try{if(navigator.share)await navigator.share({title:'Ulush',text:tx,url:l});else{await navigator.clipboard.writeText(tx+' '+l);toast(t('linkCopied'))}}catch(e){try{await navigator.clipboard.writeText(l);toast(t('linkCopied'))}catch(_){toast(l)}}}
+function csv(){const G=S.groups.find(x=>x.id==S.gid),q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+ const rows=[['Sana','Nomi','Toifa','Kim toladi','Summa']].concat(S.exps.filter(e=>e.group_id==S.gid).map(e=>[e.spent_on,e.title,e.category,(mem(e.paid_by)||{}).name,e.amount]));
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}));a.download='ulush-'+G.name+'.csv';a.click()}
+boot();
+</script></body></html>
