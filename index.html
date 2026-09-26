@@ -206,6 +206,12 @@ async function share(l){const G=S.groups.find(x=>x.id==S.gid),tx=`«${G.name}» 
 function csv(){const G=S.groups.find(x=>x.id==S.gid),q=v=>'"'+String(v).replace(/"/g,'""')+'"';
  const rows=[['Sana','Nomi','Toifa','Kim toladi','Summa']].concat(S.exps.filter(e=>e.group_id==S.gid).map(e=>[e.spent_on,e.title,e.category,(mem(e.paid_by)||{}).name,e.amount]));
  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}));a.download='ulush-'+G.name+'.csv';a.click()}
+(function(){const ORDER=['x','b','d','a','h'];let sx=0,sy=0,tracking=false;
+ document.addEventListener('touchstart',e=>{if(!S.gid||$('#md')||e.touches.length>1){tracking=false;return}const t=e.touches[0];sx=t.clientX;sy=t.clientY;tracking=true},{passive:true});
+ document.addEventListener('touchend',e=>{if(!tracking)return;tracking=false;if(!S.gid||$('#md'))return;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;
+  if(Math.abs(dx)<60||Math.abs(dx)<Math.abs(dy)*1.5)return;
+  const i=ORDER.indexOf(S.tab);if(i<0)return;const ni=dx<0?i+1:i-1;if(ni<0||ni>=ORDER.length)return;S.tab=ORDER[ni];view()},{passive:true});
+})();
 boot();
 if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})})}
 </script></body></html>
